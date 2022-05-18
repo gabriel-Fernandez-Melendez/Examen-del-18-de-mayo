@@ -17,6 +17,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import DAO.AtletaDAO;
+import DAO.MetalDAO;
 import DAO.PatrocinadorDAO;
 import DAO.PruebaDAO;
 
@@ -27,9 +28,11 @@ import javax.swing.DefaultComboBoxModel;
 
 import entidades.Atleta;
 import entidades.Lugar;
+import entidades.Metal;
 import entidades.Patrocinador;
 import entidades.Prueba;
 import utils.ConexBD;
+import utils.Datos;
 import validaciones.Validaciones;
 
 import java.awt.event.ActionListener;
@@ -37,6 +40,8 @@ import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
+import javax.swing.JTextPane;
+import javax.swing.JCheckBox;
 
 public class CerrarPrueba extends JFrame {
 
@@ -149,49 +154,98 @@ public class CerrarPrueba extends JFrame {
 		else
 			rbEquipos.setSelected(true);
 
+		//aqui entan las labels de los puestos
 		JLabel lblPatrocinador = new JLabel("Patrocinador:");
 		lblPatrocinador.setBounds(22, 161, 87, 14);
 		panel_1.add(lblPatrocinador);
 
 		JLabel lblprimerpuesto = new JLabel("Primer puesto *:");
-		lblprimerpuesto.setBounds(27, 251, 109, 14);
+		lblprimerpuesto.setBounds(20, 219, 109, 14);
 		contentPane.add(lblprimerpuesto);
 
 		JLabel lblsegundopuesto = new JLabel("Segundo puesto *:");
-		lblsegundopuesto.setBounds(27, 282, 109, 14);
+		lblsegundopuesto.setBounds(10, 294, 109, 14);
 		contentPane.add(lblsegundopuesto);
 
 		JLabel lbltercerpuesto = new JLabel("Tercer puesto *:");
-		lbltercerpuesto.setBounds(27, 313, 109, 14);
+		lbltercerpuesto.setBounds(10, 362, 109, 14);
 		contentPane.add(lbltercerpuesto);
 
 		DefaultComboBoxModel<Atleta> atletasModel = new DefaultComboBoxModel<Atleta>();
 		AtletaDAO aDAO = new AtletaDAO(ConexBD.getCon());
 		ArrayList<Atleta> atletassList = (ArrayList<Atleta>) aDAO.buscarTodos();
 		/// Pero el modelo de comboBox básico requiere Strings
-		String[] atletasStr = new String[atletassList.size()];
-		for (int i = 0; i < atletassList.size(); i++)
+		//aqui  he cambiado el tamaño de size a un  numero concreto, no los importo todos al array de cadenas pero ejecuta la ventana 
+		String[] atletasStr = new String[81];
+		for (int i = 0; i < 81; i++) {
+			//esta linea que los imprime por consola fue para comprobar a nivel personal si daba un nuloen algun punto 
+			System.out.println(atletassList.get(i).getPersona().data());
 			atletasStr[i] = atletassList.get(i).getPersona().data();
-
+		}
+		
+		DefaultComboBoxModel<Metal> metalModel = new DefaultComboBoxModel<Metal>();
+		MetalDAO mDAO = new MetalDAO(ConexBD.getCon());
+		ArrayList<Metal> metalList = new ArrayList<Metal>();
+		/// Pero el modelo de comboBox básico requiere Strings
+		//aqui  he cambiado el tamaño de size a un  numero concreto, no los importo todos al array de cadenas pero ejecuta la ventana 
+		String[] metalStrOro = new String[20];
+		for (Metal o:Datos.OROS) {
+			metalList.add(o);
+		}
+		for(int i=0;i<20;i++) {
+			System.out.println(metalList.get(i).toString());
+			metalStrOro[i]=metalList.get(i).toString();
+		}
+		
+		DefaultComboBoxModel<Metal> metalModel2 = new DefaultComboBoxModel<Metal>();
+		ArrayList<Metal> metalList2 = new ArrayList<Metal>();
+		/// Pero el modelo de comboBox básico requiere Strings
+		//aqui  he cambiado el tamaño de size a un  numero concreto, no los importo todos al array de cadenas pero ejecuta la ventana 
+		String[] metalStrplata = new String[20];
+		for (Metal o:Datos.PLATAS) {
+			metalList.add(o);
+		}
+		for(int i=0;i<20;i++) {
+			System.out.println(metalList.get(i).toString());
+			metalStrplata[i]=metalList.get(i).toString();
+		}
+		
+		DefaultComboBoxModel<Metal> metalModel3 = new DefaultComboBoxModel<Metal>();
+		ArrayList<Metal> metalList3 = new ArrayList<Metal>();
+		/// Pero el modelo de comboBox básico requiere Strings
+		//aqui  he cambiado el tamaño de size a un  numero concreto, no los importo todos al array de cadenas pero ejecuta la ventana 
+		String[] metalStrbronce = new String[20];
+		for (Metal o:Datos.BRONCES) {
+			metalList.add(o);
+		}
+		for(int i=0;i<20;i++) {
+			System.out.println(metalList.get(i).toString());
+			metalStrbronce[i]=metalList.get(i).toString();
+		}
+		
+		
+		
+		
 
 
 		JComboBox<Atleta> comboBoxPuesto1 = new JComboBox<Atleta>();
 		comboBoxPuesto1.setModel(new DefaultComboBoxModel(atletasStr));		
 		lblprimerpuesto.setLabelFor(comboBoxPuesto1);
-		comboBoxPuesto1.setBounds(140, 247, 287, 22);
+		comboBoxPuesto1.setBounds(99, 215, 287, 22);
 		contentPane.add(comboBoxPuesto1);
 
 		JComboBox<Atleta> comboBoxPuesto2 = new JComboBox<Atleta>();
 		comboBoxPuesto2.setModel(new DefaultComboBoxModel(atletasStr));
 		lblsegundopuesto.setLabelFor(comboBoxPuesto2);
-		comboBoxPuesto2.setBounds(140, 278, 287, 22);
+		comboBoxPuesto2.setBounds(117, 290, 287, 22);
 		contentPane.add(comboBoxPuesto2);
 
 		JComboBox<Atleta> comboBoxPuesto3 = new JComboBox<Atleta>();
 		comboBoxPuesto3.setModel(new DefaultComboBoxModel(atletasStr));
 		lbltercerpuesto.setLabelFor(comboBoxPuesto3);
-		comboBoxPuesto3.setBounds(140, 309, 287, 22);
+		comboBoxPuesto3.setBounds(99, 358, 287, 22);
 		contentPane.add(comboBoxPuesto3);
+		
 
 		LocalDate hoyMas1MesLD = LocalDate.now().plusMonths(1);
 		java.util.Date hoyMas1Mes = new Date(hoyMas1MesLD.getYear() - 1900, hoyMas1MesLD.getMonthValue() - 1,
@@ -335,6 +389,138 @@ public class CerrarPrueba extends JFrame {
 		});
 		buttonCancelar.setBounds(335, 405, 89, 23);
 		contentPane.add(buttonCancelar);
+		
+		JLabel lblNewLabel = new JLabel("id Oro*: ");
+		lblNewLabel.setBounds(53, 269, 46, 14);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("id Plata*:");
+		lblNewLabel_1.setBounds(35, 338, 46, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("id Bronce*:");
+		lblNewLabel_2.setBounds(10, 405, 72, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		JSpinner spinner = new JSpinner();
+		spinner.setBounds(83, 244, 30, 20);
+		contentPane.add(spinner);
+		
+		JLabel lblNewLabel_3 = new JLabel("Hora");
+		lblNewLabel_3.setBounds(53, 244, 46, 14);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("Minutos");
+		lblNewLabel_4.setBounds(117, 244, 46, 14);
+		contentPane.add(lblNewLabel_4);
+		
+		JSpinner spinner_1 = new JSpinner();
+		spinner_1.setBounds(160, 244, 30, 20);
+		contentPane.add(spinner_1);
+		
+		JLabel lblNewLabel_5 = new JLabel("Segundos");
+		lblNewLabel_5.setBounds(196, 248, 58, 14);
+		contentPane.add(lblNewLabel_5);
+		
+		JSpinner spinner_2 = new JSpinner();
+		spinner_2.setBounds(257, 244, 30, 20);
+		contentPane.add(spinner_2);
+		
+		JLabel lblNewLabel_6 = new JLabel("Centesimas");
+		lblNewLabel_6.setBounds(292, 247, 46, 14);
+		contentPane.add(lblNewLabel_6);
+		
+		JSpinner spinner_3 = new JSpinner();
+		spinner_3.setBounds(347, 244, 30, 20);
+		contentPane.add(spinner_3);
+		
+		JComboBox comboBoxOro = new JComboBox<Metal>();
+		comboBoxOro.setModel(new DefaultComboBoxModel(metalStrOro));
+		comboBoxOro.setBounds(99, 268, 155, 22);
+		contentPane.add(comboBoxOro);
+		
+		
+		JLabel lblNewLabel_7 = new JLabel("Hora");
+		lblNewLabel_7.setBounds(53, 313, 46, 14);
+		contentPane.add(lblNewLabel_7);
+		
+		JSpinner spinner_4 = new JSpinner();
+		spinner_4.setBounds(83, 319, 30, 14);
+		contentPane.add(spinner_4);
+		
+		JLabel lblNewLabel_8 = new JLabel("Minutos");
+		lblNewLabel_8.setBounds(117, 319, 46, 14);
+		contentPane.add(lblNewLabel_8);
+		
+		JSpinner spinner_5 = new JSpinner();
+		spinner_5.setBounds(160, 318, 30, 14);
+		contentPane.add(spinner_5);
+		
+		JLabel lblNewLabel_9 = new JLabel("Segundos");
+		lblNewLabel_9.setBounds(196, 319, 58, 14);
+		contentPane.add(lblNewLabel_9);
+		
+		JSpinner spinner_6 = new JSpinner();
+		spinner_6.setBounds(257, 319, 30, 14);
+		contentPane.add(spinner_6);
+		
+		JLabel lblNewLabel_10 = new JLabel("Centesimas");
+		lblNewLabel_10.setBounds(292, 313, 46, 20);
+		contentPane.add(lblNewLabel_10);
+		
+		JSpinner spinner_7 = new JSpinner();
+		spinner_7.setBounds(335, 316, 30, 14);
+		contentPane.add(spinner_7);
+		
+		JComboBox comboBoxplata = new JComboBox<Metal>();
+		comboBoxplata.setModel(new DefaultComboBoxModel(metalStrplata));
+		comboBoxplata.setBounds(83, 334, 155, 22);
+		contentPane.add(comboBoxplata);
+		
+		JLabel lblNewLabel_11 = new JLabel("Hora");
+		lblNewLabel_11.setBounds(53, 384, 46, 14);
+		contentPane.add(lblNewLabel_11);
+		
+		JSpinner spinner_8 = new JSpinner();
+		spinner_8.setBounds(83, 381, 30, 20);
+		contentPane.add(spinner_8);
+		
+		JLabel lblNewLabel_12 = new JLabel("Minutos");
+		lblNewLabel_12.setBounds(117, 384, 46, 14);
+		contentPane.add(lblNewLabel_12);
+		
+		JSpinner spinner_9 = new JSpinner();
+		spinner_9.setBounds(160, 381, 30, 20);
+		contentPane.add(spinner_9);
+		
+		JLabel lblNewLabel_13 = new JLabel("Segundos");
+		lblNewLabel_13.setBounds(192, 380, 62, 14);
+		contentPane.add(lblNewLabel_13);
+		
+		JSpinner spinner_10 = new JSpinner();
+		spinner_10.setBounds(257, 381, 30, 20);
+		contentPane.add(spinner_10);
+		
+		JLabel lblNewLabel_14 = new JLabel("Centesimas");
+		lblNewLabel_14.setBounds(292, 380, 46, 14);
+		contentPane.add(lblNewLabel_14);
+		
+		JSpinner spinner_11 = new JSpinner();
+		spinner_11.setBounds(335, 381, 30, 20);
+		contentPane.add(spinner_11);
+		
+		JComboBox comboBoxbronce = new JComboBox<Metal>();
+		comboBoxbronce.setModel(new DefaultComboBoxModel(metalStrbronce));
+		comboBoxbronce.setBounds(63, 405, 157, 14);
+		contentPane.add(comboBoxbronce);
+		
+		JLabel lblNewLabel_15 = new JLabel("Establecer como DEFINITIVO: ");
+		lblNewLabel_15.setBounds(10, 425, 153, 14);
+		contentPane.add(lblNewLabel_15);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("");
+		chckbxNewCheckBox.setBounds(160, 421, 30, 23);
+		contentPane.add(chckbxNewCheckBox);
 
 	}
 }
