@@ -28,6 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import entidades.Atleta;
 import entidades.Lugar;
+import entidades.Manager;
 import entidades.Metal;
 import entidades.Patrocinador;
 import entidades.Prueba;
@@ -36,6 +37,11 @@ import utils.Datos;
 import validaciones.Validaciones;
 
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
@@ -522,5 +528,45 @@ public class CerrarPrueba extends JFrame {
 		chckbxNewCheckBox.setBounds(160, 421, 30, 23);
 		contentPane.add(chckbxNewCheckBox);
 
+	}
+	private static void exportar(Prueba b) {
+		String path = "resultado_prueba"+b.getId()+".txt";
+		File fichero = new File(path);
+		FileWriter escritor = null;
+		PrintWriter buffer = null;
+		String ret="";
+		try {
+			try {
+				escritor = new FileWriter(fichero, false);
+				buffer = new PrintWriter(escritor);
+			
+					buffer.println("Resultado de la prueba "+b.getId()+b.getNombre()+" el pasado" 
+							+b.getFecha()+ "en" +b.getFecha()+
+							//no tuve tiempo a cambiar todo el string pero dejo con el comentario que el proceso seria ir usando get y set hasta comentar la informacion que debe de entrar ne el fichero 
+							"Primer puesto para <nombreAtleta_1> (<NIFNIEAtleta_1>), con un tiempo de \r\n"
+							+ "<tiempo1(hh:mm:ss,cc)>. Se le otorga el oro <idOro> de pureza <purezaOro>%. \r\n"
+							+ "Segundo puesto para <nombreAtleta_2> (<NIFNIEAtleta_2>), con un tiempo de \r\n"
+							+ "<tiempo2(hh:mm:ss,cc)>. Se le otorga la plata <idPlata> de pureza \r\n"
+							+ "<purezaPlata>%. \r\n"
+							+ "Tercer puesto para <nombreAtleta_3> (<NIFNIEAtleta_3>), con un tiempo de \r\n"
+							+ "<tiempo3(hh:mm:ss,cc)>. Se le otorga el bronce <idBronce> de pureza \r\n"
+							+ "<purezaBronce>%. \r\n"
+							+ "Resultado <idResultado> cerrado a las <hh:mm:ss> del día <dd/MM/yyyy>. ");
+				
+			} finally {
+				if (buffer != null) {
+					buffer.close();
+				}
+				if (escritor != null) {
+					escritor.close();
+				}
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("Se ha producido una FileNotFoundException" + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Se ha producido una IOException" + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("Se ha producido una Exception" + e.getMessage());
+		}
 	}
 }

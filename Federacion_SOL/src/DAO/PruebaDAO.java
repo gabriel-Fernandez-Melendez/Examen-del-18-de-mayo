@@ -126,8 +126,35 @@ public class PruebaDAO implements operacionesCRUD<Prueba> {
 	}
 
 	@Override
-	public boolean modificar(Prueba elemento) {
-		// TODO Auto-generated method stub
+	//implemente el metodo para acceder a la base de datos
+	public boolean modificar(Prueba elemento){ 
+		String update="update prueba set nombre=?, fecha=?, idlugar=?, individual=?, idpatrocinador=?";
+		PreparedStatement pstmt;
+		try {
+			if (this.conex == null || this.conex.isClosed())
+				this.conex = ConexBD.establecerConexion();
+			pstmt = conex.prepareStatement(update);
+			ResultSet result = pstmt.executeQuery();
+			while(result.next()) {
+				String nombre=elemento.getNombre();
+				LocalDate fecha = elemento.getFecha();
+				long id=elemento.getId();
+				boolean indiv=elemento.isIndividual();
+				long id_patrocinador=elemento.getPatrocinador().getId();
+				elemento.setNombre(nombre);
+				elemento.setFecha(fecha);
+				elemento.setId(id);
+				elemento.setIndividual(indiv);
+				//aqui es factible que tenga que hace uso del metodo especias haciendo referencia a una enumeracion que lo ponga a null en la base de datos pero ahora mismo  no recuerdo el metodo
+				elemento.setPatrocinador(null);
+				int resultado=pstmt.executeUpdate();
+				System.out.println("el resultado del update es: "+resultado);	
+			}
+			conex.close();
+		} catch (SQLException er) {
+			System.out.println("hubo un error de sql");
+			er.printStackTrace();
+		}
 		return false;
 	}
 
